@@ -1,0 +1,88 @@
+version: '3'
+services:
+  pgsql:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: ${PGDB_NAME}
+      POSTGRES_USER: ${PGDB_USER}
+      POSTGRES_PASSWORD: ${PGDB_PASS}
+    ports:
+      - 5432:5432
+    container_name: pgsql
+    networks:
+      - skynet
+
+  redis:
+    image: 'redis:alpine'
+    container_name: 'redis'
+    ports:
+      - '6379:6379'
+    networks:
+      - skynet
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - '9411:9411'
+    networks:
+      - skynet
+
+  mongo:
+    image: mongo:5.0.6
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    networks:
+      - skynet
+
+  sandbox:
+    build:
+      context: .
+      args:
+        target: sandbox
+    image: sandbox
+    container_name: sandbox
+    env_file:
+      - .env
+    command: 'npm run start:debug sandbox'
+    ports:
+      - "30000:3000"
+    volumes:
+      - '.:/app'
+    networks:
+      - skynet
+  sandbox-dapr:
+    image: 'daprio/daprd:1.6.0'
+    container_name: sandbox-dapr
+    command:
+      [
+        './daprd',
+        '-app-id',
+        'sandbox',
+        '-app-port',
+        '3000',
+        '-placement-host-address',
+        'placement:50005',
+        '-components-path',
+        '/components',
+        '-config',
+        '/config.yaml'
+      ]
+    volumes:
+      - './assets/dapr/secrets.json:/opt/secrets.json'
+      - './assets/dapr/components/secrets.yaml:/components/secrets.yaml'
+      - './assets/dapr/components/state.yaml:/components/state.yaml'
+      - './assets/dapr/components/pubsub.yaml:/components/pubsub.yaml'
+      - './assets/dapr/config.yaml:/config.yaml'
+    network_mode: 'service:sandbox'
+    depends_on:
+      - sandbox
+      - redis
+      - mongo
+      - zipkin
+      - pgsql
+
+networks:
+  skynet:
+    driver: bridge
