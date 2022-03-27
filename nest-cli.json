@@ -1,4 +1,18 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "src",
+  "projects": {
+    "dapr": {
+      "type": "library",
+      "root": "libs/dapr",
+      "entryFile": "index",
+      "sourceRoot": "libs/dapr/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/dapr/tsconfig.lib.json"
+      }
+    }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
 }
