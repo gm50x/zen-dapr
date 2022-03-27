@@ -32,7 +32,8 @@ export class Configurator {
     const documentBuilder = new DocumentBuilder()
       .setTitle(title)
       .setDescription(description)
-      .setVersion(version);
+      .setVersion(version)
+      .setExternalDoc('Export Specs', '/docs-json');
 
     const bearers: Array<BearerOptions> = [];
     if (_bearer) {
