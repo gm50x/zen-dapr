@@ -1,6 +1,6 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/sustained/src",
+  "sourceRoot": "apps/sandbox/src",
   "projects": {
     "dapr": {
       "type": "library",
@@ -9,15 +9,6 @@
       "sourceRoot": "libs/dapr/src",
       "compilerOptions": {
         "tsConfigPath": "libs/dapr/tsconfig.lib.json"
-      }
-    },
-    "sustained": {
-      "type": "application",
-      "root": "apps/sustained",
-      "entryFile": "main",
-      "sourceRoot": "apps/sustained/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/sustained/tsconfig.app.json"
       }
     },
     "sandbox": {
@@ -32,8 +23,8 @@
   },
   "compilerOptions": {
     "webpack": true,
-    "tsConfigPath": "apps/sustained/tsconfig.app.json"
+    "tsConfigPath": "apps/sandbox/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/sustained"
+  "root": "apps/sandbox"
 }
