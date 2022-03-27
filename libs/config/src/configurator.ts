@@ -1,6 +1,5 @@
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as CORS from 'cors';
 import * as compression from 'compression';
 import helmet from 'helmet';
 import { json } from 'express';
@@ -67,10 +66,7 @@ export class Configurator {
   }
 
   async addCors(): Promise<Configurator> {
-    /**
-     * FIXME: Nest has builtin cors module app.enableCors()
-     */
-    this.app.use(CORS());
+    this.app.enableCors();
     return this;
   }
 
