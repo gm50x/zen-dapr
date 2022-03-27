@@ -43,6 +43,8 @@ services:
         target: sandbox
     image: sandbox
     container_name: sandbox
+    environment:
+      - APP_NAME=sandbox
     env_file:
       - .env
     command: 'npm run start:debug sandbox'
@@ -56,21 +58,19 @@ services:
     image: 'daprio/daprd:1.6.0'
     container_name: sandbox-dapr
     command:
-      [
-        './daprd',
-        '-app-id',
-        'sandbox',
-        '-app-port',
-        '3000',
-        '-placement-host-address',
-        'placement:50005',
-        '-components-path',
-        '/components',
-        '-config',
-        '/config.yaml'
-      ]
+      - './daprd'
+      - '-app-id'
+      - 'sandbox'
+      - '-app-port'
+      - '3000'
+      - '-placement-host-address'
+      - 'placement:50005'
+      - '-components-path'
+      - '/components'
+      - '-config'
+      - '/config.yaml'
     volumes:
-      - './assets/dapr/secrets.json:/opt/secrets.json'
+      - './assets/dapr/.secrets.json:/opt/secrets.json'
       - './assets/dapr/components/secrets.yaml:/components/secrets.yaml'
       - './assets/dapr/components/state.yaml:/components/state.yaml'
       - './assets/dapr/components/pubsub.yaml:/components/pubsub.yaml'
