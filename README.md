@@ -16,6 +16,7 @@ NestJS Monorepo with Dapr and Prisma.
 - Easy topic subscriptions intermediated by dapr via the DaprModule.subscribe dynamic module.
 - Prisma using secrets from Dapr (collected asynchronously during startup)
 - Prisma schema segregated per APP in the monorepo (prisma files are inside the applications corresponding directory)
+- Automatic migrations runner from compose file.
 
 ## Comming Soon
 
@@ -23,7 +24,6 @@ NestJS Monorepo with Dapr and Prisma.
 - Blog scope application with Users, Posts, Commets
 - Mailer app for sending transactional emails with tokens and others
 - Notificator app sending notifications via webhooks (slack, discord, teams)
-- Automatic migrations runner from compose file.
 
 ## Getting Started
 
