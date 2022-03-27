@@ -7,4 +7,4 @@ import { SandboxService } from './sandbox.service';
   controllers: [SandboxController],
   providers: [SandboxService],
 })
-export class SandboxModule {}
+export class AppModule {}
