@@ -6,8 +6,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const { port } = new Configurator(app).unified({
-    enablePrisma: true,
+  const { port } = await new Configurator(app).unified({
     swagger: {
       title: 'Sandbox',
       description: 'Playground API for quick tests',

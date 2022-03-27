@@ -7,10 +7,12 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateGibberishInput, UPdateGibberishInput } from '../models';
 import { GibberishService } from '../services';
 
 @Controller('gibberish')
+@ApiTags('Gibberish')
 export class GibberishController {
   constructor(private readonly service: GibberishService) {}
 

@@ -1,4 +1,4 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as CORS from 'cors';
 import * as compression from 'compression';
@@ -21,7 +21,6 @@ type SwaggerOptions = {
 };
 
 type UnifiedConfigOptions = {
-  enablePrisma: boolean;
   swagger?: SwaggerOptions;
   enableCloudEvents?: boolean;
 };
@@ -36,7 +35,7 @@ export class Configurator {
     this.env = config.get('NODE_ENV', 'development');
   }
 
-  addSwagger(config: SwaggerOptions): Configurator {
+  async addSwagger(config: SwaggerOptions): Promise<Configurator> {
     const { title, description, version = 'v1', bearer: _bearer } = config;
     const configService = this.app.get(ConfigService);
     const env = configService.get('NODE_ENV', 'development');
@@ -67,22 +66,25 @@ export class Configurator {
     return this;
   }
 
-  addCors(): Configurator {
+  async addCors(): Promise<Configurator> {
+    /**
+     * FIXME: Nest has builtin cors module app.enableCors()
+     */
     this.app.use(CORS());
     return this;
   }
 
-  addCompression(): Configurator {
+  async addCompression(): Promise<Configurator> {
     this.app.use(compression());
     return this;
   }
 
-  addHelmet(): Configurator {
+  async addHelmet(): Promise<Configurator> {
     this.app.use(helmet());
     return this;
   }
 
-  addSerialization(): Configurator {
+  async addSerialization(): Promise<Configurator> {
     this.app.useGlobalPipes(
       new ValidationPipe({
         transform: true,
@@ -95,7 +97,7 @@ export class Configurator {
     return this;
   }
 
-  addCloudEvents(): Configurator {
+  async addCloudEvents(): Promise<Configurator> {
     this.app.use(
       json({ type: ['application/json', 'application/cloudevents+json'] }),
     );
@@ -111,22 +113,29 @@ export class Configurator {
    * - optionally adds swagger
    * - optionally adds application/cloudevents+json
    */
-  unified(config: UnifiedConfigOptions): Configurator {
-    const { enablePrisma, swagger, enableCloudEvents } = config || {
-      enablePrisma: false,
-    };
-    this.addCompression().addCors().addHelmet().addSerialization();
+  async unified(config?: UnifiedConfigOptions): Promise<Configurator> {
+    const { swagger, enableCloudEvents } = config || {};
+
+    await this.addCompression();
+    await this.addCors();
+    await this.addHelmet();
+    await this.addSerialization();
 
     if (swagger) {
       this.addSwagger(swagger);
     }
+
     if (enableCloudEvents) {
       this.addCloudEvents();
     }
 
-    if (enablePrisma) {
-      const prisma = this.app.get(PrismaService);
-      prisma.enableShutdownHooks(this.app);
+    const prisma: PrismaService = await this.app
+      .resolve(PrismaService)
+      .catch(() => null);
+
+    if (prisma) {
+      await prisma.enableShutdownHooks(this.app);
+      Logger.log('Enabled shutdown hooks for Prisma', Configurator.name);
     }
 
     return this;
