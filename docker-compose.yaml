@@ -47,13 +47,28 @@ services:
       - APP_NAME=sandbox
     env_file:
       - .env
-    command: 'npm run start:debug sandbox'
+    # command: 'npm run start:debug sandbox'
     ports:
       - "30000:3000"
-    volumes:
-      - '.:/app'
+    # volumes:
+    #   - '.:/app'
     networks:
       - skynet
+  sandbox-prisma:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.prisma
+      args:
+        target: sandbox
+    image: sandbox-prisma
+    container_name: sandbox-prisma
+    command: [ "npx", "prisma", "migrate", "reset", "--force" ]
+    env_file:
+      - .env
+    networks:
+      - skynet
+    # depends_on:
+    #   - pgsql
   sandbox-dapr:
     image: 'daprio/daprd:1.6.0'
     container_name: sandbox-dapr
