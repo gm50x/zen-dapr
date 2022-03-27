@@ -34,7 +34,7 @@ export class Configurator {
     this.env = config.get('NODE_ENV', 'development');
   }
 
-  async addSwagger(config: SwaggerOptions): Promise<Configurator> {
+  private async addSwagger(config: SwaggerOptions) {
     const { title, description, version = 'v1', bearer: _bearer } = config;
     const configService = this.app.get(ConfigService);
     const env = configService.get('NODE_ENV', 'development');
@@ -61,26 +61,21 @@ export class Configurator {
     const swaggerDocument = documentBuilder.build();
     const document = SwaggerModule.createDocument(this.app, swaggerDocument);
     SwaggerModule.setup('docs', this.app, document);
-
-    return this;
   }
 
-  async addCors(): Promise<Configurator> {
+  private async addCors() {
     this.app.enableCors();
-    return this;
   }
 
-  async addCompression(): Promise<Configurator> {
+  private async addCompression() {
     this.app.use(compression());
-    return this;
   }
 
-  async addHelmet(): Promise<Configurator> {
+  private async addHelmet() {
     this.app.use(helmet());
-    return this;
   }
 
-  async addSerialization(): Promise<Configurator> {
+  private async addSerialization() {
     this.app.useGlobalPipes(
       new ValidationPipe({
         transform: true,
@@ -89,15 +84,12 @@ export class Configurator {
         },
       }),
     );
-
-    return this;
   }
 
-  async addCloudEvents(): Promise<Configurator> {
+  private async addCloudEvents() {
     this.app.use(
       json({ type: ['application/json', 'application/cloudevents+json'] }),
     );
-    return this;
   }
 
   /**
