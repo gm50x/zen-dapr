@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { SandboxService } from './sandbox.service';
+import { SandboxService } from '../services';
 
 @Controller()
 export class SandboxController {

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SandboxController } from './sandbox.controller';
-import { SandboxService } from './sandbox.service';
+import { SandboxService } from '../services';
 
 describe('SandboxController', () => {
   let sandboxController: SandboxController;

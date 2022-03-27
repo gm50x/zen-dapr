@@ -29,6 +29,12 @@
       ],
       "@zen/config/*": [
         "libs/config/src/*"
+      ],
+      "@zen/prisma": [
+        "libs/prisma/src"
+      ],
+      "@zen/prisma/*": [
+        "libs/prisma/src/*"
       ]
     }
   }

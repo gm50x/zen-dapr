@@ -90,7 +90,8 @@
     ],
     "moduleNameMapper": {
       "^@zen/dapr(|/.*)$": "<rootDir>/libs/dapr/src/$1",
-      "^@zen/config(|/.*)$": "<rootDir>/libs/config/src/$1"
+      "^@zen/config(|/.*)$": "<rootDir>/libs/config/src/$1",
+      "^@zen/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1"
     }
   }
 }
