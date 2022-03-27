@@ -23,6 +23,12 @@
       ],
       "@zen/dapr/*": [
         "libs/dapr/src/*"
+      ],
+      "@zen/config": [
+        "libs/config/src"
+      ],
+      "@zen/config/*": [
+        "libs/config/src/*"
       ]
     }
   }
