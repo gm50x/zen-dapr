@@ -4,6 +4,8 @@ import * as CORS from 'cors';
 import * as compression from 'compression';
 import helmet from 'helmet';
 import { json } from 'express';
+import { PrismaService } from '@zen/prisma';
+import { ConfigService } from '@nestjs/config';
 
 type BearerAuthType = 'http' | 'apiKey' | 'oauth2' | 'openIdConnect';
 type BearerOptions = {
@@ -19,20 +21,29 @@ type SwaggerOptions = {
 };
 
 type UnifiedConfigOptions = {
+  enablePrisma: boolean;
   swagger?: SwaggerOptions;
   enableCloudEvents?: boolean;
 };
 
 export class Configurator {
-  constructor(private readonly app: INestApplication) {}
+  public readonly port: string;
+  public readonly env: string;
+
+  constructor(private readonly app: INestApplication) {
+    const config = app.get(ConfigService);
+    this.port = config.get('PORT', '3000');
+    this.env = config.get('NODE_ENV', 'development');
+  }
 
   addSwagger(config: SwaggerOptions): Configurator {
     const { title, description, version = 'v1', bearer: _bearer } = config;
-
+    const configService = this.app.get(ConfigService);
+    const env = configService.get('NODE_ENV', 'development');
     const documentBuilder = new DocumentBuilder()
       .setTitle(title)
       .setDescription(description)
-      .setVersion(version)
+      .setVersion(`${version}-${env}`)
       .setExternalDoc('Export Specs', '/docs-json');
 
     const bearers: Array<BearerOptions> = [];
@@ -100,14 +111,22 @@ export class Configurator {
    * - optionally adds swagger
    * - optionally adds application/cloudevents+json
    */
-  unified(config: UnifiedConfigOptions = {}): Configurator {
+  unified(config: UnifiedConfigOptions): Configurator {
+    const { enablePrisma, swagger, enableCloudEvents } = config || {
+      enablePrisma: false,
+    };
     this.addCompression().addCors().addHelmet().addSerialization();
 
-    if (config.swagger) {
-      this.addSwagger(config.swagger);
+    if (swagger) {
+      this.addSwagger(swagger);
     }
-    if (config.enableCloudEvents) {
+    if (enableCloudEvents) {
       this.addCloudEvents();
+    }
+
+    if (enablePrisma) {
+      const prisma = this.app.get(PrismaService);
+      prisma.enableShutdownHooks(this.app);
     }
 
     return this;
