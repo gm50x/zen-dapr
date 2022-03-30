@@ -5,10 +5,18 @@ import { StateQueryType } from 'dapr-client/types/state/StateQuery.type';
 
 import { DaprClientService } from './dapr-client.service';
 import { InvokeArgs, KeyValuePairMetadataType } from '../models';
+import { SubscriptionsContainer } from '../containers';
 
 @Injectable()
 export class DaprService {
-  constructor(private readonly client: DaprClientService) {}
+  constructor(
+    private readonly client: DaprClientService,
+    private readonly subscriptions: SubscriptionsContainer,
+  ) {}
+
+  getSubscriptions() {
+    return this.subscriptions.map((x) => ({ ...x }));
+  }
 
   async getSecret(key: string, store = 'secretstore'): Promise<any> {
     const secret = await this.client.secret.get(store, key);

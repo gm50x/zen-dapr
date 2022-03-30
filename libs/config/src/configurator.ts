@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import { json } from 'express';
 import { PrismaService } from '@zen/prisma';
 import { ConfigService } from '@nestjs/config';
+import { DaprService } from '@zen/dapr';
 
 type BearerAuthType = 'http' | 'apiKey' | 'oauth2' | 'openIdConnect';
 type BearerOptions = {
@@ -21,7 +22,6 @@ type SwaggerOptions = {
 
 type UnifiedConfigOptions = {
   swagger?: SwaggerOptions;
-  enableCloudEvents?: boolean;
 };
 
 export class Configurator {
@@ -102,7 +102,7 @@ export class Configurator {
    * - optionally adds application/cloudevents+json
    */
   async unified(config?: UnifiedConfigOptions): Promise<Configurator> {
-    const { swagger, enableCloudEvents } = config || {};
+    const { swagger } = config || {};
 
     await this.addCompression();
     await this.addCors();
@@ -113,10 +113,6 @@ export class Configurator {
       this.addSwagger(swagger);
     }
 
-    if (enableCloudEvents) {
-      this.addCloudEvents();
-    }
-
     const prisma: PrismaService = await this.app
       .resolve(PrismaService)
       .catch(() => null);
@@ -124,6 +120,14 @@ export class Configurator {
     if (prisma) {
       await prisma.enableShutdownHooks(this.app);
       Logger.log('Enabled shutdown hooks for Prisma', Configurator.name);
+    }
+
+    const dapr: DaprService = await this.app
+      .resolve(DaprService)
+      .catch(() => null);
+
+    if (dapr && dapr.getSubscriptions().length > 0) {
+      this.addCloudEvents();
     }
 
     return this;

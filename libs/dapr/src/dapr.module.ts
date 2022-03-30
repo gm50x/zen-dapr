@@ -8,13 +8,11 @@ import { DaprClientService, DaprService } from './services';
 
 @Module({
   imports: [HttpModule, ConfigModule.forRoot({ isGlobal: true })],
-  providers: [SubscriptionsContainer, DaprService, DaprClientService],
+  providers: [SubscriptionsContainer, DaprClientService, DaprService],
   exports: [DaprService],
 })
 export class DaprModule {
-  static subscribe(
-    subscription: Array<Subscription | string> | Subscription | string,
-  ) {
+  static subscribe(...subscription: Array<Subscription | string>) {
     const mapSubscription = (subs: string | Subscription): Subscription =>
       typeof subs === 'string' ? { route: subs, topic: subs } : { ...subs };
 

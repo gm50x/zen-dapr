@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-@Controller('gibberish')
-@ApiTags('Gibberish')
+@Controller()
+@ApiTags('Foo')
 export class FooController {
   @Post('foo')
   foo(@Body() data: any) {
