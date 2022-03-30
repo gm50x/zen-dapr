@@ -26,11 +26,11 @@ export class DaprModule {
 
     return {
       module: DaprModule,
-      controllers: [SubscriptionsController()],
+      controllers: [SubscriptionsController],
       providers: [
         {
-          provide: SubscriptionsContainer,
           useValue: subscriptions,
+          provide: SubscriptionsContainer,
         },
       ],
     };

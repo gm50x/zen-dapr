@@ -7,7 +7,12 @@ import { SandboxController, GibberishController } from './controllers';
 import { GibberishService, SandboxService } from './services';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), PrismaModule, DaprModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    PrismaModule,
+    DaprModule,
+    DaprModule.subscribe(['foo', 'bar']),
+  ],
   controllers: [SandboxController, GibberishController],
   providers: [SandboxService, GibberishService],
 })

@@ -47,11 +47,11 @@ services:
       - APP_NAME=sandbox
     env_file:
       - .env
-    # command: 'npm run start:debug sandbox'
+    command: 'npm run start:dev sandbox'
     ports:
       - "30000:3000"
-    # volumes:
-    #   - '.:/app'
+    volumes:
+      - '.:/app'
     networks:
       - skynet
   sandbox-prisma:
@@ -73,17 +73,19 @@ services:
     image: 'daprio/daprd:1.6.0'
     container_name: sandbox-dapr
     command:
-      - './daprd'
-      - '-app-id'
-      - 'sandbox'
-      - '-app-port'
-      - '3000'
-      - '-placement-host-address'
-      - 'placement:50005'
-      - '-components-path'
-      - '/components'
-      - '-config'
-      - '/config.yaml'
+      [
+        './daprd',
+        '-app-id',
+        'sandbox',
+        '-app-port',
+        '3000',
+        '-placement-host-address',
+        'placement:50005',
+        '-components-path',
+        '/components',
+        '-config',
+        '/config.yaml'
+      ]
     volumes:
       - './assets/dapr/.secrets.json:/opt/secrets.json'
       - './assets/dapr/components/secrets.yaml:/components/secrets.yaml'
