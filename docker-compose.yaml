@@ -43,6 +43,7 @@ services:
     # volumes:
     #   - '.:/app'
     networks: [ skynet ]
+    depends_on: [ pgsql ]
   sandbox-prisma:
     build:
       context: .
