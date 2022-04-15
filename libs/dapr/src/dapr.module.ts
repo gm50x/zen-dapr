@@ -12,9 +12,23 @@ import { DaprClientService, DaprService } from './services';
   exports: [DaprService],
 })
 export class DaprModule {
-  static subscribe(...subscription: Array<Subscription | string>) {
-    const mapSubscription = (subs: string | Subscription): Subscription =>
-      typeof subs === 'string' ? { route: subs, topic: subs } : { ...subs };
+  static subscribe(
+    ...subscription: Array<Subscription | [string, string] | string>
+  ) {
+    const mapSubscription = (
+      subs: string | [string, string] | Subscription,
+    ): Subscription => {
+      if (typeof subs === 'string') {
+        return { topic: subs, route: subs };
+      }
+
+      if (Array.isArray(subs)) {
+        const [topic, route] = subs;
+        return { topic, route };
+      }
+
+      return { ...subs };
+    };
 
     if (Array.isArray(subscription)) {
       subscriptions.push(...subscription.map(mapSubscription));

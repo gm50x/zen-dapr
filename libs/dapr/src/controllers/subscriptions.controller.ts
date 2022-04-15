@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags, ApiExcludeController } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
 import { SubscriptionsContainer } from '../containers';
 import { SubscriptionOutput } from '../models';
