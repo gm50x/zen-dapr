@@ -25,16 +25,21 @@ type UnifiedConfigOptions = {
 };
 
 export class Configurator {
-  public readonly port: string;
-  public readonly env: string;
+  private readonly port: string;
+  private readonly env: string;
+  private readonly _app: string;
 
   constructor(private readonly app: INestApplication) {
     const config = app.get(ConfigService);
     this.port = config.get('PORT', '3000');
     this.env = config.get('NODE_ENV', 'development');
+    this._app = config.get('APP_NAME', 'app');
   }
 
-  private async addSwagger(config: SwaggerOptions) {
+  private addSwagger(config: SwaggerOptions) {
+    if (!config) {
+      return;
+    }
     const { title, description, version = 'v1', bearer: _bearer } = config;
     const configService = this.app.get(ConfigService);
     const env = configService.get('NODE_ENV', 'development');
@@ -61,21 +66,24 @@ export class Configurator {
     const swaggerDocument = documentBuilder.build();
     const document = SwaggerModule.createDocument(this.app, swaggerDocument);
     SwaggerModule.setup('docs', this.app, document);
+    Logger.log('Swagger initialized', Configurator.name);
   }
 
-  private async addCors() {
+  private addCors() {
     this.app.enableCors();
   }
 
-  private async addCompression() {
+  private addCompression() {
     this.app.use(compression());
+    Logger.log('Compression initialized', Configurator.name);
   }
 
-  private async addHelmet() {
+  private addHelmet() {
     this.app.use(helmet());
+    Logger.log('Helmet initialized', Configurator.name);
   }
 
-  private async addSerialization() {
+  private addSerialization() {
     this.app.useGlobalPipes(
       new ValidationPipe({
         transform: true,
@@ -84,12 +92,36 @@ export class Configurator {
         },
       }),
     );
+    Logger.log('Serialization initialized', Configurator.name);
   }
 
-  private async addCloudEvents() {
+  private addCloudEvents() {
     this.app.use(
       json({ type: ['application/json', 'application/cloudevents+json'] }),
     );
+    Logger.log('Cloud Events initialized', Configurator.name);
+  }
+
+  private async addPrisma() {
+    const prisma: PrismaService = await this.app
+      .resolve(PrismaService)
+      .catch(() => null);
+
+    if (prisma) {
+      await prisma.enableShutdownHooks(this.app);
+      Logger.log('Prisma initialized', Configurator.name);
+    }
+  }
+
+  private async addDapr() {
+    const dapr: DaprService = await this.app
+      .resolve(DaprService)
+      .catch(() => null);
+
+    if (dapr && (dapr as any)._subscriptions.length > 0) {
+      this.addCloudEvents();
+    }
+    Logger.log('Dapr initialized', Configurator.name);
   }
 
   /**
@@ -101,35 +133,26 @@ export class Configurator {
    * - optionally adds swagger
    * - optionally adds application/cloudevents+json
    */
-  async unified(config?: UnifiedConfigOptions): Promise<Configurator> {
+  async unified(config?: UnifiedConfigOptions): Promise<{
+    port: string | number;
+    env: string;
+    app: string;
+  }> {
     const { swagger } = config || {};
 
-    await this.addCompression();
-    await this.addCors();
-    await this.addHelmet();
-    await this.addSerialization();
+    Promise.resolve()
+      .then(() => this.addCompression())
+      .then(() => this.addCors())
+      .then(() => this.addHelmet())
+      .then(() => this.addSerialization())
+      .then(() => this.addSwagger(swagger))
+      .then(() => this.addPrisma())
+      .then(() => this.addDapr());
 
-    if (swagger) {
-      this.addSwagger(swagger);
-    }
-
-    const prisma: PrismaService = await this.app
-      .resolve(PrismaService)
-      .catch(() => null);
-
-    if (prisma) {
-      await prisma.enableShutdownHooks(this.app);
-      Logger.log('Enabled shutdown hooks for Prisma', Configurator.name);
-    }
-
-    const dapr: DaprService = await this.app
-      .resolve(DaprService)
-      .catch(() => null);
-
-    if (dapr && dapr.getSubscriptions().length > 0) {
-      this.addCloudEvents();
-    }
-
-    return this;
+    return {
+      app: this._app,
+      env: this.env,
+      port: this.port,
+    };
   }
 }

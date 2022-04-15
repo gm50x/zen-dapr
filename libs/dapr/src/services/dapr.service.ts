@@ -11,12 +11,8 @@ import { SubscriptionsContainer } from '../containers';
 export class DaprService {
   constructor(
     private readonly client: DaprClientService,
-    private readonly subscriptions: SubscriptionsContainer,
+    private readonly _subscriptions: SubscriptionsContainer,
   ) {}
-
-  getSubscriptions() {
-    return this.subscriptions.map((x) => ({ ...x }));
-  }
 
   async getSecret(key: string, store = 'secretstore'): Promise<any> {
     const secret = await this.client.secret.get(store, key);
