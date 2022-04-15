@@ -75,4 +75,5 @@ services:
     depends_on: [ sandbox, redis, mongo, zipkin, pgsql ]
 networks:
   skynet:
+    name: skynet
     driver: bridge
