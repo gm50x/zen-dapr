@@ -7,6 +7,7 @@ import {
   SandboxController,
   GibberishController,
   EventsController,
+  HealthController,
 } from './controllers';
 import { GibberishService, SandboxService } from './services';
 
@@ -25,7 +26,12 @@ import { GibberishService, SandboxService } from './services';
       'blum',
     ),
   ],
-  controllers: [SandboxController, GibberishController, EventsController],
+  controllers: [
+    SandboxController,
+    GibberishController,
+    EventsController,
+    HealthController,
+  ],
   providers: [SandboxService, GibberishService],
 })
 export class AppModule {}
