@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { Configurator } from '@zen/config';
+import { json } from 'express';
 
 import { AppModule } from './app.module';
 

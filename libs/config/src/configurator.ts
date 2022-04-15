@@ -140,7 +140,7 @@ export class Configurator {
   }> {
     const { swagger } = config || {};
 
-    Promise.resolve()
+    await Promise.resolve()
       .then(() => this.addCompression())
       .then(() => this.addCors())
       .then(() => this.addHelmet())
@@ -149,10 +149,10 @@ export class Configurator {
       .then(() => this.addPrisma())
       .then(() => this.addDapr());
 
-    return {
-      app: this._app,
-      env: this.env,
-      port: this.port,
-    };
+    const app = this._app;
+    const env = this.env;
+    const port = this.port;
+
+    return { app, env, port };
   }
 }

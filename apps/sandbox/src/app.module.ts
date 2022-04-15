@@ -6,7 +6,7 @@ import { PrismaModule } from '@zen/prisma';
 import {
   SandboxController,
   GibberishController,
-  FooController,
+  EventsController,
 } from './controllers';
 import { GibberishService, SandboxService } from './services';
 
@@ -25,7 +25,7 @@ import { GibberishService, SandboxService } from './services';
       'blum',
     ),
   ],
-  controllers: [SandboxController, GibberishController, FooController],
+  controllers: [SandboxController, GibberishController, EventsController],
   providers: [SandboxService, GibberishService],
 })
 export class AppModule {}
