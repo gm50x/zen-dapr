@@ -9,25 +9,19 @@ services:
     ports: [ "5432:5432" ]
     container_name: pgsql
     networks: [ skynet ]
-
-  redis:
-    image: 'redis:alpine'
-    container_name: 'redis'
-    ports: [ "6379:6379" ]
-    networks: [ skynet ]
-
-  zipkin:
-    image: openzipkin/zipkin
-    container_name: zipkin
-    ports: [ "9411:9411" ]
-    networks: [ skynet ]
-
   mongo:
     image: mongo:5.0.6
     container_name: mongo
     ports: [ "27017:27017" ]
     networks: [ skynet ]
-
+  redis:
+    image: 'redis:alpine'
+    container_name: 'redis'
+    networks: [ skynet ]
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    networks: [ skynet ]
   sandbox:
     build:
       context: .
