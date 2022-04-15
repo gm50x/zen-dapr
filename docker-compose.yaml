@@ -6,35 +6,27 @@ services:
       POSTGRES_DB: ${PGDB_NAME}
       POSTGRES_USER: ${PGDB_USER}
       POSTGRES_PASSWORD: ${PGDB_PASS}
-    ports:
-      - 5432:5432
+    ports: [ "5432:5432" ]
     container_name: pgsql
-    networks:
-      - skynet
+    networks: [ skynet ]
 
   redis:
     image: 'redis:alpine'
     container_name: 'redis'
-    ports:
-      - '6379:6379'
-    networks:
-      - skynet
+    ports: [ "6379:6379" ]
+    networks: [ skynet ]
 
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
-    ports:
-      - '9411:9411'
-    networks:
-      - skynet
+    ports: [ "9411:9411" ]
+    networks: [ skynet ]
 
   mongo:
     image: mongo:5.0.6
     container_name: mongo
-    ports:
-      - '27017:27017'
-    networks:
-      - skynet
+    ports: [ "27017:27017" ]
+    networks: [ skynet ]
 
   sandbox:
     build:
@@ -45,15 +37,12 @@ services:
     container_name: sandbox
     environment:
       - APP_NAME=sandbox
-    env_file:
-      - .env
-    command: 'npm run start:dev sandbox'
-    ports:
-      - "30000:3000"
-    volumes:
-      - '.:/app'
-    networks:
-      - skynet
+    env_file: [ .env ]
+    ports: [ "30000:3000" ]
+    # command: 'npm run start:dev sandbox'
+    # volumes:
+    #   - '.:/app'
+    networks: [ skynet ]
   sandbox-prisma:
     build:
       context: .
@@ -63,29 +52,24 @@ services:
     image: sandbox-prisma
     container_name: sandbox-prisma
     command: [ "npx", "prisma", "migrate", "reset", "--force" ]
-    env_file:
-      - .env
-    networks:
-      - skynet
-    depends_on:
-      - pgsql
+    env_file: [ .env ]
+    networks: [ skynet ]
+    depends_on: [ pgsql ]
   sandbox-dapr:
     image: 'daprio/daprd:1.6.0'
     container_name: sandbox-dapr
     command:
-      [
-        './daprd',
-        '-app-id',
-        'sandbox',
-        '-app-port',
-        '3000',
-        '-placement-host-address',
-        'placement:50005',
-        '-components-path',
-        '/components',
-        '-config',
-        '/config.yaml'
-      ]
+      - './daprd'
+      - '-app-id'
+      - 'sandbox'
+      - '-app-port'
+      - '3000'
+      - '-placement-host-address'
+      - 'placement:50005'
+      - '-components-path'
+      - '/components'
+      - '-config'
+      - '/config.yaml'
     volumes:
       - './assets/dapr/.secrets.json:/opt/secrets.json'
       - './assets/dapr/components/secrets.yaml:/components/secrets.yaml'
@@ -93,13 +77,7 @@ services:
       - './assets/dapr/components/pubsub.yaml:/components/pubsub.yaml'
       - './assets/dapr/config.yaml:/config.yaml'
     network_mode: 'service:sandbox'
-    depends_on:
-      - sandbox
-      - redis
-      - mongo
-      - zipkin
-      - pgsql
-
+    depends_on: [ sandbox, redis, mongo, zipkin, pgsql ]
 networks:
   skynet:
     driver: bridge
