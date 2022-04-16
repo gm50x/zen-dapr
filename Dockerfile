@@ -16,6 +16,4 @@ RUN npm ci --only=production
 COPY --from=builder /app/dist/apps/${target} ./dist
 RUN apk add curl
 EXPOSE 3000
-HEALTHCHECK --interval=10s --timeout=15s --start-period=5s --retries=3 \
-  CMD curl --fail http://localhost:3000/health-check || exit 1
 CMD ["npm", "run", "start:prod"]
