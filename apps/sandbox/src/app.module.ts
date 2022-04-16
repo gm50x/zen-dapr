@@ -1,4 +1,4 @@
-import { Module, ModuleMetadata } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { HealthModule } from '@zen/health';
 import { DaprModule } from '@zen/dapr';
