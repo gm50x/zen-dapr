@@ -72,7 +72,7 @@ services:
       - './assets/dapr/components/pubsub.yaml:/components/pubsub.yaml'
       - './assets/dapr/config.yaml:/config.yaml'
     network_mode: 'service:sandbox'
-    depends_on: [ sandbox, redis, mongo, zipkin, pgsql ]
+    depends_on: [ sandbox, redis, mongo, pgsql, zipkin ]
 networks:
   skynet:
     name: skynet
