@@ -16,6 +16,11 @@ import { GibberishService } from '../services';
 export class GibberishController {
   constructor(private readonly service: GibberishService) {}
 
+  @Get('generic')
+  getFromGeneric() {
+    return this.service.getFromGeneric();
+  }
+
   @Get()
   getManyGibberish() {
     return this.service.getMany();
