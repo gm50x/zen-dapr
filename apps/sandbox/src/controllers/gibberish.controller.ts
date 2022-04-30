@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateGibberishInput, UPdateGibberishInput } from '../models';
+import { CreateGibberishInput, UpdateGibberishInput } from '../models';
 import { GibberishService } from '../services';
 
 @Controller('gibberish')
@@ -32,7 +32,7 @@ export class GibberishController {
   }
 
   @Put(':id')
-  updateGibberish(@Param('id') id: string, @Body() data: UPdateGibberishInput) {
+  updateGibberish(@Param('id') id: string, @Body() data: UpdateGibberishInput) {
     return this.service.create(data);
   }
 

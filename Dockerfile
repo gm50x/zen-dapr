@@ -14,6 +14,5 @@ COPY package*.json ./
 COPY apps/${target}/prisma* ./prisma
 RUN npm ci --only=production
 COPY --from=builder /app/dist/apps/${target} ./dist
-RUN apk add curl
 EXPOSE 3000
 CMD ["npm", "run", "start:prod"]

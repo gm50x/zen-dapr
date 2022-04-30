@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { HealthModule } from '@zen/health';
 import { DaprModule } from '@zen/dapr';
 import { PrismaModule } from '@zen/prisma';
 
@@ -14,7 +13,6 @@ import { GibberishService, SandboxService } from './services';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    HealthModule,
     PrismaModule,
     DaprModule,
     DaprModule.subscribe(['foo', 'events/foo']),

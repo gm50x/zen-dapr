@@ -33,9 +33,8 @@ services:
       - APP_NAME=sandbox
     env_file: [ .env ]
     ports: [ "30000:3000" ]
-    # command: 'npm run start:dev sandbox'
-    # volumes:
-    #   - '.:/app'
+    # command: 'sh -c "npm i && npm run start:dev sandbox"'
+    # volumes: [ '.:/app', '/app/prisma', '/app/node_modules' ]
     networks: [ skynet ]
     depends_on: [ pgsql ]
   sandbox-prisma:
@@ -53,18 +52,7 @@ services:
   sandbox-dapr:
     image: 'daprio/daprd:1.6.0'
     container_name: sandbox-dapr
-    command:
-      - './daprd'
-      - '-app-id'
-      - 'sandbox'
-      - '-app-port'
-      - '3000'
-      - '-placement-host-address'
-      - 'placement:50005'
-      - '-components-path'
-      - '/components'
-      - '-config'
-      - '/config.yaml'
+    command: "./daprd -app-id sandbox -app-port 3000 -placement-host-address placement:50005 -components-path /components -config /config.yaml"
     volumes:
       - './assets/dapr/.secrets.json:/opt/secrets.json'
       - './assets/dapr/components/secrets.yaml:/components/secrets.yaml'

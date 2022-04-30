@@ -35,12 +35,6 @@
       ],
       "@zen/prisma/*": [
         "libs/prisma/src/*"
-      ],
-      "@zen/health": [
-        "libs/health/src"
-      ],
-      "@zen/health/*": [
-        "libs/health/src/*"
       ]
     }
   }
