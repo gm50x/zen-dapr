@@ -37,6 +37,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/prisma/tsconfig.lib.json"
       }
+    },
+    "partnership": {
+      "type": "application",
+      "root": "apps/partnership",
+      "entryFile": "main",
+      "sourceRoot": "apps/partnership/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/partnership/tsconfig.app.json"
+      }
     }
   },
   "compilerOptions": {
