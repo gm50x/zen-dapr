@@ -11,6 +11,7 @@ import { SubscriptionsContainer } from '../containers';
 export class DaprService {
   constructor(
     private readonly client: DaprClientService,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     private readonly _subscriptions: SubscriptionsContainer,
   ) {}
 
