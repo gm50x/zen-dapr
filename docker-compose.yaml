@@ -37,6 +37,18 @@ services:
     # volumes: [ '.:/app', '/app/prisma', '/app/node_modules' ]
     networks: [ skynet ]
     depends_on: [ pgsql ]
+  sandbox-dapr:
+    image: 'daprio/daprd:1.6.0'
+    container_name: sandbox-dapr
+    command: "./daprd -app-id sandbox -app-port 3000 -placement-host-address placement:50005 -components-path /components -config /config.yaml"
+    volumes:
+      - './assets/dapr/.secrets.json:/opt/secrets.json'
+      - './assets/dapr/components/secrets.yaml:/components/secrets.yaml'
+      - './assets/dapr/components/state.yaml:/components/state.yaml'
+      - './assets/dapr/components/pubsub.yaml:/components/pubsub.yaml'
+      - './assets/dapr/config.yaml:/config.yaml'
+    network_mode: 'service:sandbox'
+    depends_on: [ sandbox, redis, mongo, pgsql, zipkin ]
   sandbox-prisma:
     build:
       context: .
@@ -49,45 +61,6 @@ services:
     env_file: [ .env ]
     networks: [ skynet ]
     depends_on: [ pgsql ]
-  partnership:
-    build:
-      context: .
-      args:
-        target: partnership
-    image: partnership
-    container_name: partnership
-    environment:
-      - APP_NAME=partnership
-    env_file: [ .env ]
-    ports: [ "30001:3000" ]
-    # command: 'sh -c "npm i && npm run start:dev partnership"'
-    # volumes: [ '.:/app', '/app/prisma', '/app/node_modules' ]
-    networks: [ skynet ]
-    depends_on: [ pgsql ]
-  partnership-prisma:
-    build:
-      context: .
-      dockerfile: ./Dockerfile.prisma
-      args:
-        target: partnership
-    image: partnership-prisma
-    container_name: partnership-prisma
-    command: [ "npx", "prisma", "migrate", "reset", "--force" ]
-    env_file: [ .env ]
-    networks: [ skynet ]
-    depends_on: [ pgsql ]
-  partnership-dapr:
-    image: 'daprio/daprd:1.6.0'
-    container_name: partnership-dapr
-    command: "./daprd -app-id partnership -app-port 3000 -placement-host-address placement:50005 -components-path /components -config /config.yaml"
-    volumes:
-      - './assets/dapr/.secrets.json:/opt/secrets.json'
-      - './assets/dapr/components/secrets.yaml:/components/secrets.yaml'
-      - './assets/dapr/components/state.yaml:/components/state.yaml'
-      - './assets/dapr/components/pubsub.yaml:/components/pubsub.yaml'
-      - './assets/dapr/config.yaml:/config.yaml'
-    network_mode: 'service:partnership'
-    depends_on: [ partnership, redis, mongo, pgsql, zipkin ]
 networks:
   skynet:
     name: skynet

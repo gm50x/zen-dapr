@@ -1,11 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 import { PrismaService } from '@zen/prisma';
+import { GibberishRepository } from '../repositories';
 
 @Injectable()
 export class GibberishService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(GibberishRepository)
+    private readonly repo: Prisma.GibberishDelegate<any>,
+  ) {}
+
+  getFromGeneric() {
+    return this.repo.findMany();
+  }
 
   get(where: Prisma.GibberishWhereUniqueInput) {
     return this.prisma.gibberish.findUnique({ where });
