@@ -37,6 +37,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/prisma/tsconfig.lib.json"
       }
+    },
+    "piracy": {
+      "type": "application",
+      "root": "apps/piracy",
+      "entryFile": "main",
+      "sourceRoot": "apps/piracy/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/piracy/tsconfig.app.json"
+      }
     }
   },
   "compilerOptions": {
