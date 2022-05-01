@@ -1,8 +1,15 @@
 import { NestFactory } from '@nestjs/core';
-import { PiracyModule } from './piracy.module';
+import { Configurator } from '@zen/config';
+import { PiracyModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(PiracyModule);
-  await app.listen(3000);
+  const { port } = await new Configurator(app).unified({
+    swagger: {
+      title: 'Piracy',
+      description: 'Pirates and Pirate Ships',
+    },
+  });
+  await app.listen(port);
 }
 bootstrap();

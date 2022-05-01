@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { PiracyModule } from './../src/piracy.module';
+import { PiracyModule } from '../src/app.module';
 
 describe('PiracyController (e2e)', () => {
   let app: INestApplication;
