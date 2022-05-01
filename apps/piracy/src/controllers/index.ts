@@ -1,1 +1,2 @@
-export * from './app.controller';
+export * from './personas.controller';
+export * from './ships.controller';

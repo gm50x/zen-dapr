@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '@zen/prisma';
 import { Persona, Ship } from './models';
-import { AppController } from './controllers';
+import { PersonasController, ShipsController } from './controllers';
 import { AppService } from './services';
 
 @Module({
@@ -11,7 +11,7 @@ import { AppService } from './services';
     PrismaModule,
     PrismaModule.forModel(Persona, Ship),
   ],
-  controllers: [AppController],
+  controllers: [PersonasController, ShipsController],
   providers: [AppService],
 })
 export class PiracyModule {}
