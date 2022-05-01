@@ -61,6 +61,45 @@ services:
     env_file: [ .env ]
     networks: [ skynet ]
     depends_on: [ pgsql ]
+  piracy:
+    build:
+      context: .
+      args:
+        target: piracy
+    image: zen/piracy
+    container_name: piracy
+    environment:
+      - APP_NAME=piracy
+    env_file: [ .env ]
+    ports: [ "30001:3000" ]
+    command: 'sh -c "npm i && npm run start:dev piracy"'
+    volumes: [ '.:/app', '/app/prisma', '/app/node_modules' ]
+    networks: [ skynet ]
+    depends_on: [ pgsql ]
+  piracy-dapr:
+    image: 'daprio/daprd:1.6.0'
+    container_name: piracy-dapr
+    command: "./daprd -app-id piracy -app-port 3000 -placement-host-address placement:50005 -components-path /components -config /config.yaml"
+    volumes:
+      - './assets/dapr/.secrets.json:/opt/secrets.json'
+      - './assets/dapr/components/secrets.yaml:/components/secrets.yaml'
+      - './assets/dapr/components/state.yaml:/components/state.yaml'
+      - './assets/dapr/components/pubsub.yaml:/components/pubsub.yaml'
+      - './assets/dapr/config.yaml:/config.yaml'
+    network_mode: 'service:piracy'
+    depends_on: [ piracy, redis, mongo, pgsql, zipkin ]
+  piracy-prisma:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.prisma
+      args:
+        target: piracy
+    image: piracy-prisma
+    container_name: piracy-prisma
+    # command: [ "npx", "prisma", "migrate", "reset", "--force" ]
+    env_file: [ .env ]
+    networks: [ skynet ]
+    depends_on: [ pgsql ]
 networks:
   skynet:
     name: skynet
