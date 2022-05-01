@@ -27,7 +27,7 @@ services:
       context: .
       args:
         target: sandbox
-    image: sandbox
+    image: zen/sandbox
     container_name: sandbox
     environment:
       - APP_NAME=sandbox
