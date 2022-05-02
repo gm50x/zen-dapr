@@ -25,17 +25,4 @@ export class PrismaModule {
       exports: [...models],
     };
   }
-
-  static forRepository(...repos: Array<any>): DynamicModule {
-    return {
-      module: PrismaModule,
-      providers: repos.map((repository) => ({
-        provide: repository,
-        useFactory: (prisma: PrismaService) =>
-          prisma[(repository as any).getModelName()],
-        inject: [PrismaService],
-      })),
-      exports: repos,
-    };
-  }
 }
