@@ -1,4 +1,16 @@
 version: '3'
+
+networks:
+  skynet:
+    name: skynet
+    driver: bridge
+
+volumes:
+  pgdata:
+    name: 'pgdata'
+  mongodata:
+    name: 'mongodata'
+
 services:
   pgsql:
     image: postgres:alpine
@@ -6,13 +18,15 @@ services:
       POSTGRES_DB: ${PGDB_NAME}
       POSTGRES_USER: ${PGDB_USER}
       POSTGRES_PASSWORD: ${PGDB_PASS}
-    ports: [ "5432:5432" ]
+    ports: [ '5432:5432' ]
+    volumes: [ 'pgdata:/var/lib/postgresql/data' ]
     container_name: pgsql
     networks: [ skynet ]
   mongo:
     image: mongo:5.0.6
     container_name: mongo
     ports: [ "27017:27017" ]
+    volumes: [ 'mongodata:/data/db' ]
     networks: [ skynet ]
   redis:
     image: 'redis:alpine'
@@ -100,7 +114,3 @@ services:
     env_file: [ .env ]
     networks: [ skynet ]
     depends_on: [ pgsql ]
-networks:
-  skynet:
-    name: skynet
-    driver: bridge
