@@ -35,6 +35,12 @@
       ],
       "@zen/prisma/*": [
         "libs/prisma/src/*"
+      ],
+      "@zen/data-version": [
+        "libs/data-version/src"
+      ],
+      "@zen/data-version/*": [
+        "libs/data-version/src/*"
       ]
     }
   }

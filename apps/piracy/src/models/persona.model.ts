@@ -1,4 +1,4 @@
-import { Persona as Model } from '@prisma/client';
+import type { Persona as Model } from '@prisma/client';
 
 export class Persona implements Model {
   id: string;

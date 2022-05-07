@@ -46,6 +46,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/piracy/tsconfig.app.json"
       }
+    },
+    "data-version": {
+      "type": "library",
+      "root": "libs/data-version",
+      "entryFile": "index",
+      "sourceRoot": "libs/data-version/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/data-version/tsconfig.lib.json"
+      }
     }
   },
   "compilerOptions": {
