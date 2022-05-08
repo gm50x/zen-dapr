@@ -86,8 +86,8 @@ services:
       - APP_NAME=piracy
     env_file: [ .env ]
     ports: [ "30001:3000" ]
-    command: 'sh -c "npm i && npm run start:dev piracy"'
-    volumes: [ '.:/app', '/app/prisma', '/app/node_modules' ]
+    # command: 'sh -c "npm i && npm run start:dev piracy"'
+    # volumes: [ '.:/app', '/app/prisma', '/app/node_modules' ]
     networks: [ skynet ]
     depends_on: [ pgsql ]
   piracy-dapr:
