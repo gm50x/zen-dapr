@@ -1,28 +1,11 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { DaprModule } from '@zen/dapr';
 import { PrismaService } from './services';
-
-const toCamelCase = (str) =>
-  str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
-    if (Number(match) === 0) return '';
-    return index === 0 ? match.toLowerCase() : match.toUpperCase();
-  });
+import { PrismaProvider } from './services/prisma.provider';
 
 @Module({
-  providers: [PrismaService],
+  imports: [DaprModule],
+  providers: [PrismaProvider],
   exports: [PrismaService],
 })
-export class PrismaModule {
-  static forModel(
-    ...models: Array<new (...args: Array<any>) => any>
-  ): DynamicModule {
-    return {
-      module: PrismaModule,
-      providers: models.map((x) => ({
-        inject: [PrismaService],
-        provide: x,
-        useFactory: (prisma: PrismaService) => prisma[toCamelCase(x.name)],
-      })),
-      exports: [...models],
-    };
-  }
-}
+export class PrismaModule {}

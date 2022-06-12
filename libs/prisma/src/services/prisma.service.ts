@@ -3,6 +3,10 @@ import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
+  static fromUrl(url: string) {
+    return new PrismaService({ datasources: { db: { url } } });
+  }
+
   async onModuleInit() {
     await this.$connect();
   }
