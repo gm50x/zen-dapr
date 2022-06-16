@@ -1,23 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { DataVersionService } from '@zen/data-version';
-import { InjectRepository } from '@zen/prisma';
+import { PrismaService } from '@zen/prisma';
 import { Persona, Ship } from '../models';
 
 @Injectable()
 export class AppService {
   constructor(
-    @InjectRepository(Persona)
-    private readonly personaPrisma: Prisma.PersonaDelegate<any>,
-    @InjectRepository(Ship)
-    private readonly shipPrisma: Prisma.ShipDelegate<any>,
+    private readonly prisma: PrismaService,
     private readonly dataver: DataVersionService,
-  ) {}
+  ) {
+    setTimeout(async () => {
+      const r = await this.prisma.persona.findMany();
+      console.log(r);
+    }, 2000);
+  }
   async createPersona(name: string) {
-    const existing = await this.personaPrisma.findFirst({ where: { name } });
+    const existing = await this.prisma.persona.findFirst({ where: { name } });
 
     if (!existing) {
-      const result = await this.personaPrisma.create({ data: { name } });
+      const result = await this.prisma.persona.create({ data: { name } });
       await this.dataver.createVersion(Persona, result);
       return result;
     }
@@ -26,20 +27,21 @@ export class AppService {
   }
 
   async listPersonas() {
-    const result = await this.personaPrisma.findMany();
+    const result = await this.prisma.persona.findMany();
 
     const versions = await Promise.all(
       result.map((x) => this.dataver.getVersions(Persona, x.id)),
     );
 
-    return result.map((x) => ({
-      ...x,
-      versions: versions.find(([y]) => y.id === x.id),
-    }));
+    return result;
+    // return result.map((x) => ({
+    //   ...x,
+    //   versions: versions.find(([y]) => y.id === x.id),
+    // }));
   }
 
   async listShips() {
-    const result = await this.shipPrisma.findMany();
+    const result = await this.prisma.ship.findMany();
 
     const versions = await Promise.all(
       result.map((x) => this.dataver.getVersions(Ship, x.id)),
@@ -52,10 +54,10 @@ export class AppService {
   }
 
   async createShip(name: string) {
-    const existing = await this.shipPrisma.findFirst({ where: { name } });
+    const existing = await this.prisma.ship.findFirst({ where: { name } });
 
     if (!existing) {
-      const result = await this.shipPrisma.create({ data: { name } });
+      const result = await this.prisma.ship.create({ data: { name } });
       await this.dataver.createVersion(Ship, result);
       return result;
     }

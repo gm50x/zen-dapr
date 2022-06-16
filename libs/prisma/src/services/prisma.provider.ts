@@ -1,7 +1,8 @@
+import { Provider } from '@nestjs/common';
 import { DaprService } from '@zen/dapr';
 import { PrismaService } from './prisma.service';
 
-export const PrismaProvider = {
+export const PrismaProvider: Provider<Promise<PrismaService>> = {
   provide: PrismaService,
   inject: [DaprService],
   useFactory: async (dapr: DaprService) => {

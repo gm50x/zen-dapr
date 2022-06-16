@@ -6,10 +6,10 @@ networks:
     driver: bridge
 
 volumes:
-  pgdata:
-    name: 'pgdata'
-  mongodata:
-    name: 'mongodata'
+  zen-pg-data:
+    name: 'zen-pg-data'
+  zen-mongo-data:
+    name: 'zen-mongo-data'
 
 services:
   pgsql:
@@ -19,14 +19,14 @@ services:
       POSTGRES_USER: ${PGDB_USER}
       POSTGRES_PASSWORD: ${PGDB_PASS}
     ports: [ '5432:5432' ]
-    volumes: [ 'pgdata:/var/lib/postgresql/data' ]
+    volumes: [ 'zen-pg-data:/var/lib/postgresql/data' ]
     container_name: pgsql
     networks: [ skynet ]
   mongo:
     image: mongo:5.0.6
     container_name: mongo
     ports: [ "27017:27017" ]
-    volumes: [ 'mongodata:/data/db' ]
+    volumes: [ 'zen-mongo-data:/data/db' ]
     networks: [ skynet ]
   redis:
     image: 'redis:alpine'
@@ -110,7 +110,7 @@ services:
         target: piracy
     image: piracy-prisma
     container_name: piracy-prisma
-    # command: [ "npx", "prisma", "migrate", "reset", "--force" ]
+    command: [ "npx", "prisma", "migrate", "reset", "--force" ]
     env_file: [ .env ]
     networks: [ skynet ]
     depends_on: [ pgsql ]

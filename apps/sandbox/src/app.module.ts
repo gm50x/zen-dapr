@@ -8,14 +8,12 @@ import {
   GibberishController,
   EventsController,
 } from './controllers';
-import { Gibberish } from './models';
 import { GibberishService, SandboxService } from './services';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
-    PrismaModule.forModel(Gibberish),
     DaprModule,
     DaprModule.subscribe(['foo', 'events/foo']),
   ],
