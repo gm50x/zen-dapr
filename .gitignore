@@ -1,6 +1,6 @@
 # environment variables and secrets
 .env
-.secrets.json
+secrets.json
 
 # compiled output
 /dist
