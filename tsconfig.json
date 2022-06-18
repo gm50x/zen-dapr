@@ -41,6 +41,12 @@
       ],
       "@zen/config/*": [
         "libs/config/src/*"
+      ],
+      "@zen/publisher": [
+        "libs/publisher/src"
+      ],
+      "@zen/publisher/*": [
+        "libs/publisher/src/*"
       ]
     }
   }

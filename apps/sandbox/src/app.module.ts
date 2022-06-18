@@ -5,6 +5,7 @@ import {
   PrismaOptionsFactory,
 } from '@zen/prisma';
 import { SecretsProvider, SecretsProviderModule } from '@zen/secrets-provider';
+import { PublisherModule } from 'libs/publisher/src';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -25,6 +26,7 @@ function CreatePrismaOptions(secretName: string): any {
 @Module({
   imports: [
     SecretsProviderModule,
+    PublisherModule,
     PrismaModule.forRootAsync({
       imports: [SecretsProviderModule],
       useClass: CreatePrismaOptions('sandbox-database-url'),
