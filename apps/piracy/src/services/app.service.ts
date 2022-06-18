@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataVersionService } from '@zen/data-version';
+import { DavrService } from '@zen/davr';
 import { PrismaService } from '@zen/prisma';
 import { Persona, Ship } from '../models';
 
@@ -7,19 +7,14 @@ import { Persona, Ship } from '../models';
 export class AppService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly dataver: DataVersionService,
-  ) {
-    setTimeout(async () => {
-      const r = await this.prisma.persona.findMany();
-      console.log(r);
-    }, 2000);
-  }
+    private readonly davr: DavrService,
+  ) {}
   async createPersona(name: string) {
     const existing = await this.prisma.persona.findFirst({ where: { name } });
 
     if (!existing) {
       const result = await this.prisma.persona.create({ data: { name } });
-      await this.dataver.createVersion(Persona, result);
+      await this.davr.createVersion(Persona, result);
       return result;
     }
 
@@ -30,7 +25,7 @@ export class AppService {
     const result = await this.prisma.persona.findMany();
 
     const versions = await Promise.all(
-      result.map((x) => this.dataver.getVersions(Persona, x.id)),
+      result.map((x) => this.davr.getVersions(Persona, x.id)),
     );
 
     return result;
@@ -44,7 +39,7 @@ export class AppService {
     const result = await this.prisma.ship.findMany();
 
     const versions = await Promise.all(
-      result.map((x) => this.dataver.getVersions(Ship, x.id)),
+      result.map((x) => this.davr.getVersions(Ship, x.id)),
     );
 
     return result.map((x) => ({
@@ -58,7 +53,7 @@ export class AppService {
 
     if (!existing) {
       const result = await this.prisma.ship.create({ data: { name } });
-      await this.dataver.createVersion(Ship, result);
+      await this.davr.createVersion(Ship, result);
       return result;
     }
 

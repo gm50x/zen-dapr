@@ -8,15 +8,13 @@ import {
 import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { DaprService } from '@zen/dapr';
+import { UseAspectOfVersioning } from '@zen/davr';
 import { Observable, tap } from 'rxjs';
-import { CreatePirate } from '../models';
+import { CreatePirate, Persona } from '../models';
 import { AppService } from '../services';
 
-const UseAspects = () =>
-  applyDecorators(
-    UseInterceptors(FirstInterceptor),
-    UseInterceptors(SecondInterceptor),
-  );
+const UseAspects = (...aspects: Array<new (...args: any) => NestInterceptor>) =>
+  applyDecorators(...aspects.map((aspect) => UseInterceptors(aspect)));
 
 @Injectable()
 class FirstInterceptor implements NestInterceptor {
@@ -72,7 +70,8 @@ export class PersonasController {
   }
 
   @Get()
-  @UseAspects()
+  @UseAspectOfVersioning(Persona)
+  @UseAspects(FirstInterceptor, SecondInterceptor)
   async list() {
     return this.service.listPersonas();
   }

@@ -6,7 +6,7 @@ import { IVersion } from '../models';
 type Constructor<T> = new (...args: Array<any>) => T;
 
 @Injectable()
-export class DataVersionService {
+export class DavrService {
   constructor(private readonly dapr: DaprService) {}
 
   async createVersion<T extends { id: string }>(

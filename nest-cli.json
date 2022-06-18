@@ -47,13 +47,13 @@
         "tsConfigPath": "apps/piracy/tsconfig.app.json"
       }
     },
-    "data-version": {
+    "davr": {
       "type": "library",
-      "root": "libs/data-version",
+      "root": "libs/davr",
       "entryFile": "index",
-      "sourceRoot": "libs/data-version/src",
+      "sourceRoot": "libs/davr/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/data-version/tsconfig.lib.json"
+        "tsConfigPath": "libs/davr/tsconfig.lib.json"
       }
     }
   },

@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '@zen/prisma';
 import { PersonasController, ShipsController } from './controllers';
 import { AppService } from './services';
-import { DataVersionModule } from '@zen/data-version';
+import { DavrModule } from '@zen/davr';
 import { DaprModule } from '@zen/dapr';
 
 @Module({
@@ -13,7 +13,7 @@ import { DaprModule } from '@zen/dapr';
     DaprModule,
     DaprModule.subscribe('foo', 'bar'),
     DaprModule.subscribe('fizz'),
-    DataVersionModule,
+    DavrModule,
   ],
   controllers: [PersonasController, ShipsController],
   providers: [AppService],

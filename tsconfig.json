@@ -36,11 +36,11 @@
       "@zen/prisma/*": [
         "libs/prisma/src/*"
       ],
-      "@zen/data-version": [
-        "libs/data-version/src"
+      "@zen/davr": [
+        "libs/davr/src"
       ],
-      "@zen/data-version/*": [
-        "libs/data-version/src/*"
+      "@zen/davr/*": [
+        "libs/davr/src/*"
       ]
     }
   }
