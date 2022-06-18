@@ -1,54 +1,17 @@
 import {
   CallHandler,
   ExecutionContext,
-  Inject,
   Injectable,
   NestInterceptor,
   UseInterceptors,
 } from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
 import { DavrService } from '../services';
-import { IAspect } from './aspect.interface';
-
-type Constructor<T> = new (...args: any) => T;
-
-export function UseAspectInterceptor<T>(
-  Aspect: Constructor<T>,
-): Constructor<NestInterceptor> {
-  class Interceptor implements NestInterceptor {
-    constructor(
-      @Inject(Aspect)
-      private readonly aspect: IAspect,
-    ) {}
-    async intercept(
-      context: ExecutionContext,
-      next: CallHandler<any>,
-    ): Promise<Observable<any>> {
-      const request = context.switchToHttp().getRequest<Request>();
-
-      return next.handle().pipe(
-        tap(async (result) => {
-          await this.aspect.execute(request, result);
-        }),
-      );
-    }
-  }
-
-  return Interceptor;
-}
-
-// Aspect -> Does not change the output
-// MutatingAspect -> Changes the output
-
-// export class AspectOfVersioning implements IAspect {
-//   execute(input: Request, output: any) {
-//     console.log('hello world!');
-//   }
-// }
+import { Constructor } from '@zen/domain';
 
 export function AspectOfVersioning<T>(
-  model: new (...args) => T,
-): new (...args: any) => NestInterceptor {
+  model: Constructor<T>,
+): Constructor<NestInterceptor> {
   @Injectable()
   class AspectOfVersioning implements NestInterceptor {
     constructor(private readonly davr: DavrService) {}

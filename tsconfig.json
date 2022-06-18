@@ -41,6 +41,12 @@
       ],
       "@zen/davr/*": [
         "libs/davr/src/*"
+      ],
+      "@zen/domain": [
+        "libs/domain/src"
+      ],
+      "@zen/domain/*": [
+        "libs/domain/src/*"
       ]
     }
   }
