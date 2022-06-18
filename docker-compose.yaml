@@ -47,8 +47,8 @@ services:
       - APP_NAME=sandbox
     env_file: [ .env ]
     ports: [ "30000:3000" ]
-    # command: 'sh -c "npm i && npm run start:dev sandbox"'
-    # volumes: [ '.:/app', '/app/prisma', '/app/node_modules' ]
+    command: 'sh -c "npm i && npm run start:dev sandbox"'
+    volumes: [ '.:/app', '/app/prisma', '/app/node_modules' ]
     networks: [ skynet ]
     depends_on: [ pgsql ]
   sandbox-dapr:
@@ -61,6 +61,5 @@ services:
       - './dapr/components/secrets.yaml:/.dapr/components/secrets.yaml'
       - './dapr/components/state.yaml:/.dapr/components/state.yaml'
       - './dapr/components/pubsub.yaml:/.dapr/components/pubsub.yaml'
-      - './dapr/config.yaml:/config.yaml'
     network_mode: 'service:sandbox'
     depends_on: [ sandbox, redis, mongo, pgsql, zipkin ]
