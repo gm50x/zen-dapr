@@ -1,9 +1,0 @@
-############################################################
-Zen:
-  An oversimplified way to build services with NestJS
-  Commands and Usage:
-    prisma-sync:
-      Synchronizes your database and prisma app schema and
-      generates the prisma client for that given schema.
-      $ make prisma-sync app=myApp
-############################################################

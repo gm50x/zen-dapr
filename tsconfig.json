@@ -18,35 +18,11 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@zen/dapr": [
-        "libs/dapr/src"
-      ],
-      "@zen/dapr/*": [
-        "libs/dapr/src/*"
-      ],
-      "@zen/config": [
-        "libs/config/src"
-      ],
-      "@zen/config/*": [
-        "libs/config/src/*"
-      ],
       "@zen/prisma": [
         "libs/prisma/src"
       ],
       "@zen/prisma/*": [
         "libs/prisma/src/*"
-      ],
-      "@zen/davr": [
-        "libs/davr/src"
-      ],
-      "@zen/davr/*": [
-        "libs/davr/src/*"
-      ],
-      "@zen/domain": [
-        "libs/domain/src"
-      ],
-      "@zen/domain/*": [
-        "libs/domain/src/*"
       ]
     }
   }

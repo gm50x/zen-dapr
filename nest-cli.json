@@ -1,34 +1,8 @@
 {
+  "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/sandbox/src",
+  "sourceRoot": "src",
   "projects": {
-    "dapr": {
-      "type": "library",
-      "root": "libs/dapr",
-      "entryFile": "index",
-      "sourceRoot": "libs/dapr/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/dapr/tsconfig.lib.json"
-      }
-    },
-    "sandbox": {
-      "type": "application",
-      "root": "apps/sandbox",
-      "entryFile": "main",
-      "sourceRoot": "apps/sandbox/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/sandbox/tsconfig.app.json"
-      }
-    },
-    "config": {
-      "type": "library",
-      "root": "libs/config",
-      "entryFile": "index",
-      "sourceRoot": "libs/config/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/config/tsconfig.lib.json"
-      }
-    },
     "prisma": {
       "type": "library",
       "root": "libs/prisma",
@@ -37,39 +11,9 @@
       "compilerOptions": {
         "tsConfigPath": "libs/prisma/tsconfig.lib.json"
       }
-    },
-    "piracy": {
-      "type": "application",
-      "root": "apps/piracy",
-      "entryFile": "main",
-      "sourceRoot": "apps/piracy/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/piracy/tsconfig.app.json"
-      }
-    },
-    "davr": {
-      "type": "library",
-      "root": "libs/davr",
-      "entryFile": "index",
-      "sourceRoot": "libs/davr/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/davr/tsconfig.lib.json"
-      }
-    },
-    "domain": {
-      "type": "library",
-      "root": "libs/domain",
-      "entryFile": "index",
-      "sourceRoot": "libs/domain/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/domain/tsconfig.lib.json"
-      }
     }
   },
   "compilerOptions": {
-    "webpack": true,
-    "tsConfigPath": "apps/sandbox/tsconfig.app.json"
-  },
-  "monorepo": true,
-  "root": "apps/sandbox"
+    "webpack": true
+  }
 }

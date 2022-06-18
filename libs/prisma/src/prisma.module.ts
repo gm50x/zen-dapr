@@ -1,11 +1,8 @@
 import { Module } from '@nestjs/common';
-import { DaprModule } from '@zen/dapr';
-import { PrismaService } from './services';
-import { PrismaProvider } from './services/prisma.provider';
+import { PrismaService } from './prisma.service';
 
 @Module({
-  imports: [DaprModule],
-  providers: [PrismaProvider],
+  providers: [PrismaService],
   exports: [PrismaService],
 })
 export class PrismaModule {}
