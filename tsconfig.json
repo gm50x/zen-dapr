@@ -35,6 +35,12 @@
       ],
       "@zen/secrets-provider/*": [
         "libs/secrets-provider/src/*"
+      ],
+      "@zen/config": [
+        "libs/config/src"
+      ],
+      "@zen/config/*": [
+        "libs/config/src/*"
       ]
     }
   }
