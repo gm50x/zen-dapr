@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DaprService } from '@zen/dapr';
-import { BaseDaprState } from '../interfaces';
+import { BaseDaprState, IStateProvider } from '../interfaces';
 import { DaprState } from '../interfaces/dapr-state.model';
 import { Filter } from '../interfaces/filter.model';
 import { StateProvider } from './state-provider.abstract';
@@ -64,7 +64,7 @@ const parseFilter = <T>(data: Filter<T>) => {
 const extractValue = <T>({ data }: DaprState<T>) => data;
 
 @Injectable()
-export class DaprStateService extends StateProvider {
+export class DaprStateService extends StateProvider implements IStateProvider {
   constructor(private readonly dapr: DaprService) {
     super();
   }
