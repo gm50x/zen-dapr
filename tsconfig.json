@@ -18,36 +18,18 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@zen/prisma": [
-        "libs/prisma/src"
-      ],
-      "@zen/prisma/*": [
-        "libs/prisma/src/*"
-      ],
-      "@zen/dapr": [
-        "libs/dapr/src"
-      ],
-      "@zen/dapr/*": [
-        "libs/dapr/src/*"
-      ],
-      "@zen/secrets-provider": [
-        "libs/secrets-provider/src"
-      ],
-      "@zen/secrets-provider/*": [
-        "libs/secrets-provider/src/*"
-      ],
-      "@zen/config": [
-        "libs/config/src"
-      ],
-      "@zen/config/*": [
-        "libs/config/src/*"
-      ],
-      "@zen/publisher": [
-        "libs/publisher/src"
-      ],
-      "@zen/publisher/*": [
-        "libs/publisher/src/*"
-      ]
+      "@zen/prisma": ["libs/prisma/src"],
+      "@zen/prisma/*": ["libs/prisma/src/*"],
+      "@zen/dapr": ["libs/dapr/src"],
+      "@zen/dapr/*": ["libs/dapr/src/*"],
+      "@zen/secrets-provider": ["libs/secrets-provider/src"],
+      "@zen/secrets-provider/*": ["libs/secrets-provider/src/*"],
+      "@zen/config": ["libs/config/src"],
+      "@zen/config/*": ["libs/config/src/*"],
+      "@zen/publisher": ["libs/publisher/src"],
+      "@zen/publisher/*": ["libs/publisher/src/*"],
+      "@zen/state-provider": ["libs/state-provider/src"],
+      "@zen/state-provider/*": ["libs/state-provider/src/*"]
     }
   }
 }

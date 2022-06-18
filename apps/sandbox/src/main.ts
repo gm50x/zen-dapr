@@ -1,12 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { PrismaService } from '@zen/prisma';
 import { Configurator } from 'libs/config/src';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  new Configurator(app).unified({
+  const { port } = await new Configurator(app).unified({
     swagger: {
       title: 'Sandbox',
       description:
@@ -14,9 +12,6 @@ async function bootstrap() {
     },
   });
 
-  const prisma = app.get(PrismaService);
-  prisma.enableShutdownHooks(app);
-
-  await app.listen(3000);
+  await app.listen(port);
 }
 bootstrap();

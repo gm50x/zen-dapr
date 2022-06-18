@@ -56,6 +56,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/publisher/tsconfig.lib.json"
       }
+    },
+    "state-provider": {
+      "type": "library",
+      "root": "libs/state-provider",
+      "entryFile": "index",
+      "sourceRoot": "libs/state-provider/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/state-provider/tsconfig.lib.json"
+      }
     }
   },
   "compilerOptions": {

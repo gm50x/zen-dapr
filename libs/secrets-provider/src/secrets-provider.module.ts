@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { DaprModule } from '@zen/dapr';
 import { DaprSecretsService, SecretsProvider } from './services';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), DaprModule],
+  imports: [DaprModule],
   providers: [
     {
       provide: SecretsProvider,

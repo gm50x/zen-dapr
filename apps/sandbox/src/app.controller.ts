@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
+import { User } from './models';
 
 @Controller()
 export class AppController {
@@ -8,5 +9,17 @@ export class AppController {
   @Get()
   async getHello(): Promise<string> {
     return this.appService.getHello();
+  }
+
+  @Post('users')
+  async createUser(@Body() data: User) {
+    this.appService.createUser(data);
+  }
+
+  @Post('foo')
+  async postFoo(@Body() data: any): Promise<any> {
+    console.log('triggered', data);
+
+    return;
   }
 }

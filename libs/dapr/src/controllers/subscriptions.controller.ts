@@ -1,11 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiExcludeController, ApiTags } from '@nestjs/swagger';
 
 import { SubscriptionsContainer } from '../containers';
 import { SubscriptionOutput } from '../models';
 
 @Controller('dapr')
 @ApiTags('Dapr Subscriptions')
+@ApiExcludeController()
 export class SubscriptionsController {
   constructor(private readonly subscriptions: SubscriptionsContainer) {}
 

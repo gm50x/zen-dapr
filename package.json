@@ -88,9 +88,10 @@
     "moduleNameMapper": {
       "^@zen/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1",
       "^@zen/dapr(|/.*)$": "<rootDir>/libs/dapr/src/$1",
-      "^@zen/secrets-provider(|/.*)$": "<rootDir>/libs/secrets-provider/src/$1",
       "^@zen/config(|/.*)$": "<rootDir>/libs/config/src/$1",
-      "^@zen/publisher(|/.*)$": "<rootDir>/libs/publisher/src/$1"
+      "^@zen/publisher(|/.*)$": "<rootDir>/libs/publisher/src/$1",
+      "^@zen/state-provider(|/.*)$": "<rootDir>/libs/state-provider/src/$1",
+      "^@zen/secrets-provider(|/.*)$": "<rootDir>/libs/secrets-provider/src/$1"
     }
   }
 }
