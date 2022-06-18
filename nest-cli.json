@@ -29,6 +29,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/dapr/tsconfig.lib.json"
       }
+    },
+    "secrets-provider": {
+      "type": "library",
+      "root": "libs/secrets-provider",
+      "entryFile": "index",
+      "sourceRoot": "libs/secrets-provider/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/secrets-provider/tsconfig.lib.json"
+      }
     }
   },
   "compilerOptions": {

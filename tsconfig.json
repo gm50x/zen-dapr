@@ -29,6 +29,12 @@
       ],
       "@zen/dapr/*": [
         "libs/dapr/src/*"
+      ],
+      "@zen/secrets-provider": [
+        "libs/secrets-provider/src"
+      ],
+      "@zen/secrets-provider/*": [
+        "libs/secrets-provider/src/*"
       ]
     }
   }
