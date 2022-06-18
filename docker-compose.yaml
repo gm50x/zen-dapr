@@ -47,7 +47,7 @@ services:
       - APP_NAME=sandbox
     env_file: [ .env ]
     ports: [ 30000:3000, 9229:9229 ]
-    command: 'sh -c "npm i && npm run start:debug --debug 0.0.0.0:9229 sandbox"'
+    command: 'sh -c "npm i && npm run start:debug sandbox"'
     volumes: [ '.:/app', '/app/prisma', '/app/node_modules' ]
     networks: [ skynet ]
     depends_on: [ pgsql ]
