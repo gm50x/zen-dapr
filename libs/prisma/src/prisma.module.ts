@@ -1,4 +1,4 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Module, Provider } from '@nestjs/common';
 import {
   PrismaModuleAsyncOptions,
   PrismaModuleOptions,
@@ -9,7 +9,7 @@ import { PrismaService, PrismaDatasourceUrl } from './services';
 @Module({})
 export class PrismaModule {
   static forRoot({ url }: PrismaModuleOptions): DynamicModule {
-    const dataSourceProvider = {
+    const dataSourceProvider: Provider<PrismaDatasourceUrl> = {
       provide: PrismaDatasourceUrl,
       useValue: url,
     };
@@ -24,7 +24,7 @@ export class PrismaModule {
     imports,
     useClass,
   }: PrismaModuleAsyncOptions): DynamicModule {
-    const dataSourceProvider = {
+    const dataSourceProvider: Provider<Promise<PrismaDatasourceUrl>> = {
       provide: PrismaDatasourceUrl,
       inject: [useClass],
       useFactory: async (dataSourceFactory: PrismaOptionsFactory) => {
