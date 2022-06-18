@@ -1,10 +1,10 @@
 {
   "name": "zen",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "0.1.0",
+  "description": "Autonomous services monorepo powered by NestJS, Dapr, Prisma and Docker (and k8s for deployment)",
+  "author": "Getúlio Magela Silva",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
