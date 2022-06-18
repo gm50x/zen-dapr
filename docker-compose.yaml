@@ -54,8 +54,9 @@ services:
   sandbox-dapr:
     image: 'daprio/daprd:1.6.0'
     container_name: sandbox-dapr
-    command: "./daprd -app-id sandbox -app-port 3000 -placement-host-address placement:50005 -components-path /components -config /config.yaml"
+    command: "./daprd -app-id sandbox -app-port 3000 -placement-host-address placement:50005 -components-path /.dapr/components -config /.dapr/config.yaml"
     volumes:
+      - './dapr/config.yaml:/.dapr/config.yaml'
       - './dapr/secrets.json:/.dapr/secrets.json'
       - './dapr/components/secrets.yaml:/.dapr/components/secrets.yaml'
       - './dapr/components/state.yaml:/.dapr/components/state.yaml'
