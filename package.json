@@ -83,7 +83,8 @@
       "<rootDir>/apps/"
     ],
     "moduleNameMapper": {
-      "^@zen/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1"
+      "^@zen/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1",
+      "^@zen/dapr(|/.*)$": "<rootDir>/libs/dapr/src/$1"
     }
   }
 }

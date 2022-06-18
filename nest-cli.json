@@ -20,6 +20,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/sandbox/tsconfig.app.json"
       }
+    },
+    "dapr": {
+      "type": "library",
+      "root": "libs/dapr",
+      "entryFile": "index",
+      "sourceRoot": "libs/dapr/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/dapr/tsconfig.lib.json"
+      }
     }
   },
   "compilerOptions": {
