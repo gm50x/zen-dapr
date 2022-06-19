@@ -4,6 +4,7 @@ import { SecretsProvider } from '@zen/secrets-provider';
 import { Publisher } from '@zen/publisher';
 import { StateProvider } from '@zen/state-provider';
 import { User } from './models';
+import { DataVersioningService } from 'libs/data-versioning/src/services';
 
 @Injectable()
 export class AppService {
@@ -12,17 +13,29 @@ export class AppService {
     private readonly publisher: Publisher,
     private readonly stateProvider: StateProvider,
     private readonly prisma: PrismaService,
+    private readonly dataVersioning: DataVersioningService,
   ) {}
 
   async createUser(data: User): Promise<any> {
-    await this.stateProvider.save({ ...data, id: 1 });
-    const saved = await this.stateProvider.get<User>(1);
-    const all = await this.stateProvider.getMany<User>();
-    const hector = await this.stateProvider.getMany<User>({
-      email: ['hector.barbossa@piracy.sea', 'jack.sparrow@piracy.sea'],
-      name: 'Hector Barbossa',
+    const { email, name } = data;
+    const saved = await this.prisma.user.create({
+      data: { name, email },
     });
-    console.log({ data, saved, all, hector });
+    await this.dataVersioning.createVersion(User, saved, 'doe');
+    return saved;
+  }
+
+  async getUsers(): Promise<any> {
+    const users = await this.prisma.user.findMany();
+
+    const versions = await this.dataVersioning.getVersions(
+      User,
+      ...users.map((x) => x.id.toString()),
+    );
+
+    console.log(versions);
+
+    return versions;
   }
 
   async getHello(): Promise<string> {

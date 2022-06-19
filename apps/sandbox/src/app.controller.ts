@@ -16,6 +16,11 @@ export class AppController {
     this.appService.createUser(data);
   }
 
+  @Get('users')
+  async getUsers() {
+    return this.appService.getUsers();
+  }
+
   @Post('foo')
   async postFoo(@Body() data: any): Promise<any> {
     console.log('triggered', data);

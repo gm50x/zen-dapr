@@ -33,9 +33,16 @@ const parseValue = (key: string, value: any | Array<any>) => {
 
 const parseFilterValue = (filter: any) => {
   const isMultipleFilterValue = Array.isArray(filter);
+  const isSingleValuesMultiFilter = filter.length === 1;
+  if (isMultipleFilterValue && isSingleValuesMultiFilter) {
+    const [EQ] = filter;
+    return { EQ };
+  }
+
   if (isMultipleFilterValue) {
     return { OR: filter.map((x) => ({ EQ: x })) };
   }
+
   return { EQ: filter };
 };
 
@@ -76,15 +83,18 @@ export class DaprStateService extends StateProvider implements IStateProvider {
   async getMany<T extends BaseDaprState>(
     filter?: Filter<T>,
   ): Promise<Array<T>> {
+    console.log(JSON.stringify(parseFilter(filter), null, '  '));
     return this.dapr
       .stateQuery<DaprState<T>>(filter ? { filter: parseFilter(filter) } : null)
       .then(([values]) => values.map(extractValue));
   }
 
   async save<T extends BaseDaprState>(data: T): Promise<void> {
-    const { timeToLiveInSeconds, ...state } = data;
-    const key = `${state.id}`;
-    const value = { key, data: { ...state, id: key } };
+    const { timeToLiveInSeconds, key, ...state } = data;
+    const value = {
+      key: key || state.id.toString(),
+      data: { ...state, key },
+    };
 
     if (!timeToLiveInSeconds) {
       return this.dapr.stateSave([{ key, value }]);

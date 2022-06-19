@@ -6,6 +6,7 @@ import {
   PrismaOptionsFactory,
 } from '@zen/prisma';
 import { SecretsProvider, SecretsProviderModule } from '@zen/secrets-provider';
+import { DataVersioningModule } from 'libs/data-versioning/src';
 import { PublisherModule } from 'libs/publisher/src';
 import { StateProviderModule } from 'libs/state-provider/src';
 import { AppController } from './app.controller';
@@ -30,6 +31,7 @@ function CreatePrismaOptions(secretName: string): any {
     SecretsProviderModule,
     PublisherModule,
     StateProviderModule,
+    DataVersioningModule,
     DaprModule.subscribe('foo'),
     PrismaModule.forRootAsync({
       imports: [SecretsProviderModule],

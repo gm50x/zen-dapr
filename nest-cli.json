@@ -65,6 +65,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/state-provider/tsconfig.lib.json"
       }
+    },
+    "data-versioning": {
+      "type": "library",
+      "root": "libs/data-versioning",
+      "entryFile": "index",
+      "sourceRoot": "libs/data-versioning/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/data-versioning/tsconfig.lib.json"
+      }
     }
   },
   "compilerOptions": {

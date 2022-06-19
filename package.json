@@ -91,7 +91,8 @@
       "^@zen/config(|/.*)$": "<rootDir>/libs/config/src/$1",
       "^@zen/publisher(|/.*)$": "<rootDir>/libs/publisher/src/$1",
       "^@zen/state-provider(|/.*)$": "<rootDir>/libs/state-provider/src/$1",
-      "^@zen/secrets-provider(|/.*)$": "<rootDir>/libs/secrets-provider/src/$1"
+      "^@zen/secrets-provider(|/.*)$": "<rootDir>/libs/secrets-provider/src/$1",
+      "^@zen/data-versioning(|/.*)$": "<rootDir>/libs/data-versioning/src/$1"
     }
   }
 }
