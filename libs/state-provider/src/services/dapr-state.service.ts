@@ -11,7 +11,6 @@ const DAPR_STATE_PREFIX = 'value';
 const flatten = (obj: any, parent?: any, res: any = {}) => {
   for (const key of Object.keys(obj)) {
     const propName = parent ? parent + '.' + key : key;
-
     if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
       flatten(obj[key], propName, res);
     } else {
@@ -83,7 +82,6 @@ export class DaprStateService extends StateProvider implements IStateProvider {
   async getMany<T extends BaseDaprState>(
     filter?: Filter<T>,
   ): Promise<Array<T>> {
-    console.log(JSON.stringify(parseFilter(filter), null, '  '));
     return this.dapr
       .stateQuery<DaprState<T>>(filter ? { filter: parseFilter(filter) } : null)
       .then(([values]) => values.map(extractValue));
