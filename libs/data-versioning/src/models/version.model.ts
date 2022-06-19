@@ -18,6 +18,6 @@ export class Version<T> {
       timestamp: new Date(),
     };
     const type = { type: opts.type.name };
-    Object.assign(this, defaultValues, opts, { type });
+    Object.assign(this, defaultValues, opts, type);
   }
 }
