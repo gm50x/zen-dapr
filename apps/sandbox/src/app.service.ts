@@ -21,21 +21,12 @@ export class AppService {
     const saved = await this.prisma.user.create({
       data: { name, email },
     });
-    await this.dataVersioning.createVersion(User, saved, 'doe');
+
     return saved;
   }
 
   async getUsers(): Promise<any> {
-    const users = await this.prisma.user.findMany();
-
-    const versions = await this.dataVersioning.getVersions(
-      User,
-      ...users.map((x) => x.id.toString()),
-    );
-
-    console.log(versions);
-
-    return versions;
+    return await this.prisma.user.findMany();
   }
 
   async getHello(): Promise<string> {
@@ -53,7 +44,6 @@ export class AppService {
       });
     }
 
-    console.log({ secret, users, published });
     return 'Hello World!';
   }
 }

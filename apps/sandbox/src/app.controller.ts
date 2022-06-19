@@ -1,8 +1,12 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { UseDataVersioning } from '@zen/data-versioning';
 import { AppService } from './app.service';
 import { User } from './models';
 
 @Controller()
+@UseDataVersioning(User)
+@ApiTags('Default Controller')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -13,7 +17,7 @@ export class AppController {
 
   @Post('users')
   async createUser(@Body() data: User) {
-    this.appService.createUser(data);
+    return this.appService.createUser(data);
   }
 
   @Get('users')
