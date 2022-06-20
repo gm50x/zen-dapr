@@ -3,7 +3,7 @@ import { User as Model } from '@prisma/client';
 
 export class User implements Partial<Model> {
   @ApiPropertyOptional()
-  id: number;
+  id: string;
 
   @ApiProperty()
   email: string;
