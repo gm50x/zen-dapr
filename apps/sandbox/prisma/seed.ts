@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import { gibberish } from './seeds';
+import { users } from './seeds';
 
 const prisma = new PrismaClient();
 async function main() {
@@ -8,9 +8,7 @@ async function main() {
     throw new Error('Attempt to seed non development database');
   }
 
-  await prisma.gibberish.createMany({
-    data: gibberish,
-  });
+  await prisma.user.createMany({ data: users });
 }
 
 main()

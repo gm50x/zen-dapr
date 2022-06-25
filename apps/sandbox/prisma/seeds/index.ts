@@ -1,1 +1,1 @@
-export * from './gibberish.seed';
+export * from './users.seed';

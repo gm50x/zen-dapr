@@ -1,14 +1,15 @@
 {
+  "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/sandbox/src",
   "projects": {
-    "dapr": {
+    "prisma": {
       "type": "library",
-      "root": "libs/dapr",
+      "root": "libs/prisma",
       "entryFile": "index",
-      "sourceRoot": "libs/dapr/src",
+      "sourceRoot": "libs/prisma/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/dapr/tsconfig.lib.json"
+        "tsConfigPath": "libs/prisma/tsconfig.lib.json"
       }
     },
     "sandbox": {
@@ -20,6 +21,24 @@
         "tsConfigPath": "apps/sandbox/tsconfig.app.json"
       }
     },
+    "dapr": {
+      "type": "library",
+      "root": "libs/dapr",
+      "entryFile": "index",
+      "sourceRoot": "libs/dapr/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/dapr/tsconfig.lib.json"
+      }
+    },
+    "secrets-provider": {
+      "type": "library",
+      "root": "libs/secrets-provider",
+      "entryFile": "index",
+      "sourceRoot": "libs/secrets-provider/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/secrets-provider/tsconfig.lib.json"
+      }
+    },
     "config": {
       "type": "library",
       "root": "libs/config",
@@ -29,31 +48,31 @@
         "tsConfigPath": "libs/config/tsconfig.lib.json"
       }
     },
-    "prisma": {
+    "publisher": {
       "type": "library",
-      "root": "libs/prisma",
+      "root": "libs/publisher",
       "entryFile": "index",
-      "sourceRoot": "libs/prisma/src",
+      "sourceRoot": "libs/publisher/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/prisma/tsconfig.lib.json"
+        "tsConfigPath": "libs/publisher/tsconfig.lib.json"
       }
     },
-    "piracy": {
-      "type": "application",
-      "root": "apps/piracy",
-      "entryFile": "main",
-      "sourceRoot": "apps/piracy/src",
+    "state-provider": {
+      "type": "library",
+      "root": "libs/state-provider",
+      "entryFile": "index",
+      "sourceRoot": "libs/state-provider/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/piracy/tsconfig.app.json"
+        "tsConfigPath": "libs/state-provider/tsconfig.lib.json"
       }
     },
-    "data-version": {
+    "data-versioning": {
       "type": "library",
-      "root": "libs/data-version",
+      "root": "libs/data-versioning",
       "entryFile": "index",
-      "sourceRoot": "libs/data-version/src",
+      "sourceRoot": "libs/data-versioning/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/data-version/tsconfig.lib.json"
+        "tsConfigPath": "libs/data-versioning/tsconfig.lib.json"
       }
     }
   },

@@ -7,7 +7,7 @@
 
 ## Description
 
-NestJS Monorepo with Dapr and Prisma.
+NestJS Monorepo powered by Dapr, Prisma and Docker (and K8S for deployments).
 
 ## Features
 

@@ -1,28 +1,47 @@
-import { DynamicModule, Module } from '@nestjs/common';
-import { PrismaService } from './services';
+import { DynamicModule, Module, Provider } from '@nestjs/common';
+import {
+  PrismaModuleAsyncOptions,
+  PrismaModuleOptions,
+  PrismaOptionsFactory,
+} from './interfaces';
+import { PrismaService, PrismaDatasourceUrl } from './services';
 
-const toCamelCase = (str) =>
-  str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
-    if (Number(match) === 0) return '';
-    return index === 0 ? match.toLowerCase() : match.toUpperCase();
-  });
-
-@Module({
-  providers: [PrismaService],
-  exports: [PrismaService],
-})
+@Module({})
 export class PrismaModule {
-  static forModel(
-    ...models: Array<new (...args: Array<any>) => any>
-  ): DynamicModule {
+  static forRoot({ url }: PrismaModuleOptions): DynamicModule {
+    const dataSourceProvider: Provider<PrismaDatasourceUrl> = {
+      provide: PrismaDatasourceUrl,
+      useValue: url,
+    };
     return {
       module: PrismaModule,
-      providers: models.map((x) => ({
-        inject: [PrismaService],
-        provide: x,
-        useFactory: (prisma: PrismaService) => prisma[toCamelCase(x.name)],
-      })),
-      exports: [...models],
+      providers: [dataSourceProvider, PrismaService],
+      exports: [PrismaService],
+    };
+  }
+
+  static forRootAsync({
+    imports,
+    useClass,
+  }: PrismaModuleAsyncOptions): DynamicModule {
+    const dataSourceProvider: Provider<Promise<PrismaDatasourceUrl>> = {
+      provide: PrismaDatasourceUrl,
+      inject: [useClass],
+      useFactory: async (dataSourceFactory: PrismaOptionsFactory) => {
+        const { url } = await dataSourceFactory.createPrismaOptions();
+        return url;
+      },
+    };
+
+    return {
+      module: PrismaModule,
+      imports,
+      providers: [
+        PrismaService,
+        dataSourceProvider,
+        { provide: useClass, useClass },
+      ],
+      exports: [PrismaService],
     };
   }
 }

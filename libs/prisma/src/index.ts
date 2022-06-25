@@ -1,4 +1,4 @@
 export * from './prisma.module';
 
-export * from './services';
-export * from './decorators';
+export * from './interfaces';
+export { PrismaService } from './services';

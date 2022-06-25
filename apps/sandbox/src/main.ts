@@ -1,15 +1,14 @@
 import { NestFactory } from '@nestjs/core';
-import { Configurator } from '@zen/config';
-
+import { Configurator } from 'libs/config/src';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
   const { port } = await new Configurator(app).unified({
     swagger: {
       title: 'Sandbox',
-      description: 'Playground API for quick tests',
+      description:
+        'Demonstrates monorepo powered by NestJS, Dapr, Prisma and Docker for Autonomous Services(Micro too)',
     },
   });
 

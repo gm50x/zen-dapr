@@ -1,25 +1,44 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { Injectable, Module } from '@nestjs/common';
 import { DaprModule } from '@zen/dapr';
-import { PrismaModule } from '@zen/prisma';
-
 import {
-  SandboxController,
-  GibberishController,
-  EventsController,
-} from './controllers';
-import { Gibberish } from './models';
-import { GibberishService, SandboxService } from './services';
+  PrismaModule,
+  PrismaModuleOptions,
+  PrismaOptionsFactory,
+} from '@zen/prisma';
+import { SecretsProvider, SecretsProviderModule } from '@zen/secrets-provider';
+import { DataVersioningModule } from 'libs/data-versioning/src';
+import { PublisherModule } from 'libs/publisher/src';
+import { StateProviderModule } from 'libs/state-provider/src';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+function CreatePrismaOptions(secretName: string): any {
+  @Injectable()
+  class CreatePrismaOptions implements PrismaOptionsFactory {
+    constructor(private readonly secretsProvider: SecretsProvider) {}
+    async createPrismaOptions(): Promise<PrismaModuleOptions> {
+      return {
+        url: await this.secretsProvider.getSecret(secretName),
+      };
+    }
+  }
+
+  return CreatePrismaOptions;
+}
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    PrismaModule,
-    PrismaModule.forModel(Gibberish),
-    DaprModule,
-    DaprModule.subscribe(['foo', 'events/foo']),
+    SecretsProviderModule,
+    PublisherModule,
+    StateProviderModule,
+    DataVersioningModule,
+    DaprModule.subscribe('foo'),
+    PrismaModule.forRootAsync({
+      imports: [SecretsProviderModule],
+      useClass: CreatePrismaOptions('sandbox-database-url'),
+    }),
   ],
-  controllers: [SandboxController, GibberishController, EventsController],
-  providers: [SandboxService, GibberishService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
